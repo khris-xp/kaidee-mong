@@ -39,7 +39,7 @@
 	<div class="hero-overlay bg-opacity-60" />
 	<div class="hero-content text-center text-neutral-content">
 		<div class="max-w-md">
-			{#if $user}
+			{#if $user.username !== undefined}
 				<h1>Hello, {$user.username}!</h1>
 			{:else}
 				<p>Loading...</p>

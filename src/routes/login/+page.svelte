@@ -7,9 +7,9 @@
 
 	$: submit = async () => {
 		toast.promise(userService.login(email, password), {
-			loading: 'Logging out...',
-			success: 'Logout success',
-			error: 'Logout failed'
+			loading: 'Logging in...',
+			success: 'Login success',
+			error: 'Login failed'
 		});
 		setTimeout(() => {
 			window.location.href = '/';
