@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { get } from 'svelte/store';
 	import type { IProduct } from '../interfaces/product';
+	import { addToCart, cartItems, removeFromCart } from '../store/cart';
 	export let product: IProduct = {
 		_id: '',
 		name: '',
@@ -8,6 +10,19 @@
 		sale_price: 0,
 		rating: 0
 	};
+
+	let cart = get(cartItems);
+	let cartItemIndex = cart.findIndex((item) => {
+		return item._id === product._id;
+	});
+	let cartProduct = cart[cartItemIndex];
+	cartItems.subscribe((newCartValue) => {
+		cart = newCartValue;
+		cartItemIndex = cart.findIndex((item) => {
+			return item._id === product._id;
+		});
+		cartProduct = cart[cartItemIndex];
+	});
 </script>
 
 <div class="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
@@ -23,9 +38,16 @@
 			<h5 class="inline-flex justify-start text-xl font-semibold tracking-tight text-slate-900">
 				{product.name}
 			</h5>
-			<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
-				Quantity : 4
-			</h5>
+			{#if cartProduct === undefined}
+				<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
+					Quantity : 0
+				</h5>
+			{/if}
+			{#if cartProduct !== undefined}
+				<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
+					Quantity : {cartProduct?.quantity}
+				</h5>
+			{/if}
 		</a>
 		<div class="mt-2.5 mb-5 flex items-center">
 			<span class="mr-2 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold"
@@ -50,17 +72,17 @@
 			</p>
 		</div>
 		<div class="flex items-center justify-between mx-4 space-x-2">
-			<a
-				href="/"
+			<button
 				class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+				on:click={() => addToCart(product._id)}
 			>
-				Add to cart</a
+				Add to cart</button
 			>
-			<a
-				href="/"
+			<button
 				class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+				on:click={() => removeFromCart(product._id)}
 			>
-				Remove</a
+				Remove</button
 			>
 		</div>
 	</div>

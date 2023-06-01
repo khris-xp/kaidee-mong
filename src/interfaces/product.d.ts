@@ -6,3 +6,8 @@ export interface IProduct {
     rating: number;
     image: string;
 }
+
+export interface ICart {
+    _id: string;
+    quantity: number;
+}
