@@ -27,7 +27,7 @@
 
 <div class="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
 	<a href="/">
-		<img class="h-60 rounded-t-lg object-cover" src={product.image} alt="product" />
+		<img class="h-60 rounded-t-lg object-cover w-full" src={product.image} alt="product" />
 	</a>
 	<span
 		class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
@@ -67,19 +67,19 @@
 				</svg>
 			{/each}
 			<p class="ml-2">
-				<span class="text-3xl font-bold text-slate-900">${product.sale_price}</span>
-				<span class="text-sm text-slate-900 line-through">${product.price}</span>
+				<span class="text-3xl font-bold text-slate-900">฿{product.sale_price}</span>
+				<span class="text-sm text-slate-900 line-through">฿{product.price}</span>
 			</p>
 		</div>
 		<div class="flex items-center justify-between mx-4 space-x-2">
 			<button
-				class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+				class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
 				on:click={() => addToCart(product._id)}
 			>
 				Add to cart</button
 			>
 			<button
-				class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+				class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
 				on:click={() => removeFromCart(product._id)}
 			>
 				Remove</button
