@@ -1,9 +1,16 @@
 <script lang="ts">
+	import { userService } from '../../services/user.services';
+
 	let email: string = '';
 	let password: string = '';
 
-	$: submit = () => {
-		console.log(email, password);
+	$: submit = async () => {
+		try {
+			await userService.login(email, password);
+            window.location.href = '/';
+		} catch (error) {
+			return error;
+		}
 	};
 </script>
 
