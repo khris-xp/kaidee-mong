@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { NavBrand, NavHamburger, NavLi, NavUl, Navbar } from 'flowbite-svelte';
 </script>
 
@@ -8,7 +9,17 @@
 	</NavBrand>
 	<NavHamburger on:click={toggle} />
 	<NavUl {hidden}>
-		<NavLi href="/" active={true} activeClass="text-orange-500">Home</NavLi>
-		<NavLi href="/login" nonActiveClass="hover:text-orange-500">Login</NavLi>
+		<NavLi
+			href="/"
+			active={$page.url.pathname === '/' ? true : false}
+			activeClass="text-orange-500"
+			nonActiveClass="text-gray-500 hover:text-orange-500">Home</NavLi
+		>
+		<NavLi
+			href="/login"
+			active={$page.url.pathname === '/login' ? true : false}
+			activeClass="text-orange-500"
+			nonActiveClass="text-gray-500 hover:text-orange-500">Login</NavLi
+		>
 	</NavUl>
 </Navbar>
