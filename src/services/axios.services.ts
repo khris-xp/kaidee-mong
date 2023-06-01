@@ -1,7 +1,8 @@
+import { PUBLIC_API_URL } from '$env/static/public';
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
-const baseURL = 'http://localhost:4000/';
+const baseURL = PUBLIC_API_URL;
 
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL,
