@@ -1,9 +1,11 @@
 <script lang="ts">
+	import Card from '../components/Card.svelte';
+	import { products } from '../constants/product';
 	import { user } from '../store/user';
 </script>
 
 <div
-	class="hero min-h-screen"
+	class="hero min-h-screen w-full bg-base-200 bg-cover"
 	style="background-image: url(https://garage-pak.com/wp-content/uploads/2021/12/Shopping-Day.jpg);"
 >
 	<div class="hero-overlay bg-opacity-60" />
@@ -20,5 +22,13 @@
 			</p>
 			<button class="btn btn-primary">Get Started</button>
 		</div>
+	</div>
+</div>
+
+<div class="p-10 flex justify-center">
+	<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+		{#each products as product}
+			<Card {product} />
+		{/each}
 	</div>
 </div>
