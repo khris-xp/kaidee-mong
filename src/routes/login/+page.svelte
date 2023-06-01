@@ -1,16 +1,19 @@
 <script lang="ts">
+	import toast from 'svelte-french-toast';
 	import { userService } from '../../services/user.services';
 
 	let email: string = '';
 	let password: string = '';
 
 	$: submit = async () => {
-		try {
-			await userService.login(email, password);
-            window.location.href = '/';
-		} catch (error) {
-			return error;
-		}
+		toast.promise(userService.login(email, password), {
+			loading: 'Logging out...',
+			success: 'Logout success',
+			error: 'Logout failed'
+		});
+		setTimeout(() => {
+			window.location.href = '/';
+		}, 1000);
 	};
 </script>
 

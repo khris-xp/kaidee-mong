@@ -12,6 +12,14 @@ export const userService = {
             throw new Error(message);
         }
     },
+    logout: async () => {
+        try {
+            Cookies.remove('token');
+        } catch (error) {
+            const message = (error as Error).message;
+            throw new Error(message);
+        }
+    },
     getUserProfile: async () => {
         try {
             const response = await axiosInstance.get('/users/profile');

@@ -25,6 +25,9 @@ dependencies:
   postcss:
     specifier: ^8.4.24
     version: 8.4.24
+  svelte-french-toast:
+    specifier: 1.0.4-beta.0
+    version: 1.0.4-beta.0(svelte@3.59.1)
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
@@ -1972,6 +1975,15 @@ packages:
       svelte: 3.59.1
     dev: true
 
+  /svelte-french-toast@1.0.4-beta.0(svelte@3.59.1):
+    resolution: {integrity: sha512-PkYNukEQAPZyV5ei+JzeYEsbaXFSbJS8/SDTdC8giYa5Atxp2SRepFnPDWx6mu7rV53g886FNLktPMLwRljkpw==}
+    peerDependencies:
+      svelte: ^3.57.0
+    dependencies:
+      svelte: 3.59.1
+      svelte-writable-derived: 3.0.1(svelte@3.59.1)
+    dev: false
+
   /svelte-hmr@0.15.2(svelte@3.59.1):
     resolution: {integrity: sha512-q/bAruCvFLwvNbeE1x3n37TYFb3mTBJ6TrCq6p2CoFbSTNhDE9oAtEfpy+wmc9So8AG0Tja+X0/mJzX9tSfvIg==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -2028,6 +2040,14 @@ packages:
       svelte: 3.59.1
       typescript: 5.0.4
     dev: true
+
+  /svelte-writable-derived@3.0.1(svelte@3.59.1):
+    resolution: {integrity: sha512-zBWCS5c3MA9o4NT/UJHP3KoPOhtmH2ZQ/QRK31w9LzLdPP7MNncUcBGIu4iH2RVt17iRfR6agm7nEqwNvsYuMw==}
+    peerDependencies:
+      svelte: ^3.2.1
+    dependencies:
+      svelte: 3.59.1
+    dev: false
 
   /svelte@3.59.1:
     resolution: {integrity: sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==}
