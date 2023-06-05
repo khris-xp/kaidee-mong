@@ -33,6 +33,12 @@
 			<button class="text-gray-500 hover:text-orange-500" on:click={logout}>Logout</button>
 		{:else}
 			<NavLi
+				href="/register"
+				active={$page.url.pathname === '/register'}
+				activeClass="text-orange-500"
+				nonActiveClass="text-gray-500 hover:text-orange-500">Register</NavLi
+			>
+			<NavLi
 				href="/login"
 				active={$page.url.pathname === '/login'}
 				activeClass="text-orange-500"
