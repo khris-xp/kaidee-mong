@@ -1,22 +1,3 @@
-<script lang="ts">
-	import toast from 'svelte-french-toast';
-	import { userService } from '../../services/user.services';
-
-	let email: string = '';
-	let password: string = '';
-
-	$: submit = async () => {
-		toast.promise(userService.login(email, password), {
-			loading: 'Logging in...',
-			success: 'Login success',
-			error: 'Login failed'
-		});
-		setTimeout(() => {
-			window.location.href = '/';
-		}, 1000);
-	};
-</script>
-
 <section class="bg-white">
 	<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
 		<a
@@ -34,7 +15,20 @@
 				>
 					Sign in to your account
 				</h1>
-				<form class="space-y-4 md:space-y-6" on:submit|preventDefault={submit}>
+				<form class="space-y-4 md:space-y-6">
+					<div>
+						<label for="email" class="block mb-2 text-sm font-medium text-gray-900"
+							>Your name</label
+						>
+						<input
+							type="text"
+							name="name"
+							id="name"
+							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-orange-600 focus:border-orange-600 block w-full p-2.5"
+							placeholder="John Doe"
+							required
+						/>
+					</div>
 					<div>
 						<label for="email" class="block mb-2 text-sm font-medium text-gray-900"
 							>Your email</label
@@ -45,7 +39,6 @@
 							id="email"
 							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-orange-600 focus:border-orange-600 block w-full p-2.5"
 							placeholder="name@gmail.com"
-							bind:value={email}
 							required
 						/>
 					</div>
@@ -59,20 +52,19 @@
 							name="password"
 							id="password"
 							placeholder="••••••••"
-							bind:value={password}
 							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-orange-600 focus:border-orange-600 block w-full p-2.5"
 							required
 						/>
 					</div>
 					<button
 						type="submit"
-						class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+						class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
 						>Sign in</button
 					>
 					<p class="text-sm font-light text-gray-500">
-						Don`t have an account yet? <a
-							href="/register"
-							class="font-medium text-orange-600 hover:underline">Sign up</a
+						Already have an account yet ? <a
+							href="/login"
+							class="font-medium text-orange-600 hover:underline">Sign in</a
 						>
 					</p>
 				</form>
