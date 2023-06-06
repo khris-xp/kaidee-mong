@@ -15,7 +15,7 @@ export const userService = {
     },
     login: async (email: string, password: string) => {
         try {
-            const response = await axiosInstance.post('/user/login', { email, password });
+            const response: AxiosResponse = await axiosInstance.post('/user/login', { email, password });
             Cookies.set('token', response.data.accesstoken, { expires: 1 });
             return response;
         } catch (error) {
@@ -35,7 +35,7 @@ export const userService = {
         try {
             const token = Cookies.get('token');
             if (token) {
-                const response = await axiosInstance.get('/user/info');
+                const response: AxiosResponse = await axiosInstance.get('/user/info');
                 return response.data;
             }
         } catch (error) {
