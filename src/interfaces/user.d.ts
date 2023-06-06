@@ -1,11 +1,10 @@
 export interface IUser {
     _id: string;
     email: string;
-    username: string;
-    score: number;
-    role: string;
-    group: string;
-    createdAt: string;
-    updatedAt: string;
-    tasks: never[];
+    name: string;
+    role: number;
+    cart: Array<object>;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    __v: number;
 }

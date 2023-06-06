@@ -4,8 +4,8 @@ import { axiosInstance } from '../services/axios.services';
 export const userService = {
     login: async (email: string, password: string) => {
         try {
-            const response = await axiosInstance.post('/auth/login', { email, password });
-            Cookies.set('token', response.headers.authorization);
+            const response = await axiosInstance.post('/user/login', { email, password });
+            Cookies.set('token', response.data.accesstoken, { expires: 1 });
             return response;
         } catch (error) {
             const message = (error as Error).message;
@@ -22,7 +22,7 @@ export const userService = {
     },
     getUserProfile: async () => {
         try {
-            const response = await axiosInstance.get('/users/profile');
+            const response = await axiosInstance.get('/user/info');
             return response.data;
         } catch (error) {
             return error;

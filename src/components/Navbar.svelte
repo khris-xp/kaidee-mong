@@ -29,7 +29,7 @@
 			activeClass="text-orange-500"
 			nonActiveClass="text-gray-500 hover:text-orange-500">Home</NavLi
 		>
-		{#if $user.username !== undefined}
+		{#if $user.name !== undefined}
 			<button class="text-gray-500 hover:text-orange-500" on:click={logout}>Logout</button>
 		{:else}
 			<NavLi
