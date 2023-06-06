@@ -4,6 +4,7 @@ export interface ICart {
 }
 
 export interface IProduct {
+    _id: string;
     product_id: string;
     title: string;
     price: number;

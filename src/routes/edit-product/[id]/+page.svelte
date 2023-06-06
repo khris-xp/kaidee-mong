@@ -1,18 +1,25 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
-	import Error from '../../components/Error.svelte';
-	import { productService } from '../../services/product.services';
-	import { uploadService } from '../../services/upload.services';
-	import { user } from '../../store/user';
+	import type { ChangeEventHandler } from 'svelte/elements';
+	import type { IProduct } from '../../../interfaces/product';
+	import { productService } from '../../../services/product.services';
+	import { uploadService } from '../../../services/upload.services';
 
-	let product_id: string = '';
-	let title: string = '';
-	let price: number = 0;
-	let description: string = '';
-	let content: string = '';
-	let category: string = '';
-	let images: { public_id: string; url: string } = { public_id: '', url: '' };
+	let productById: IProduct;
 	let uploadImageStatus: boolean = false;
+
+	const fetchProductById = async () => {
+		const data = await productService.getAllProducts();
+		productById = data.find((product: IProduct) => product.product_id === $page.params.id);
+	};
+
+	onMount(() => {
+		fetchProductById();
+	});
+
+	let images: { public_id: string; url: string } = { public_id: '', url: '' };
 
 	const handleUploadImage = async (e: Event) => {
 		const inputElement = e.target as HTMLInputElement;
@@ -30,28 +37,31 @@
 		uploadImageStatus = false;
 	};
 
-	$: handleSubmit = async () => {
-		await productService.createProducts(
-			product_id,
-			title,
-			price,
-			description,
-			content,
-			category,
+	const handleSubmit = async () => {
+		await productService.updateProducts(
+			productById._id,
+			productById.product_id,
+			productById.title,
+			productById.price,
+			productById.description,
+			productById.content,
+			productById.category,
 			images
 		);
-		toast.success('Product created successfully');
+		toast.success('Update created successfully');
 		setTimeout(() => {
 			window.location.href = '/';
 		}, 1000);
 	};
+
+	$: {
+		images = productById?.images;
+	}
 </script>
 
-{#if $user?.role !== 1}
-	<Error />
-{:else}
-	<section class="max-w-4xl p-6 mx-auto bg-gray-50 rounded-md shadow-md my-5">
-		<h1 class="text-xl font-bold text-black capitalize">Create Product</h1>
+<section class="max-w-4xl p-6 mx-auto bg-gray-50 rounded-md shadow-md my-5">
+	<h1 class="text-xl font-bold text-black capitalize">Edit Product</h1>
+	{#if productById}
 		<form>
 			<div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
 				<div>
@@ -60,7 +70,7 @@
 						id="product_id"
 						type="text"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={product_id}
+						bind:value={productById.product_id}
 					/>
 				</div>
 
@@ -70,7 +80,7 @@
 						id="product_title"
 						type="text"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={title}
+						bind:value={productById.title}
 					/>
 				</div>
 
@@ -80,7 +90,7 @@
 						id="price"
 						type="number"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={price}
+						bind:value={productById.price}
 					/>
 				</div>
 				<div>
@@ -88,7 +98,7 @@
 					<textarea
 						id="description"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={description}
+						bind:value={productById.description}
 					/>
 				</div>
 				<div>
@@ -97,14 +107,14 @@
 						id="content"
 						type="text"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={content}
+						bind:value={productById.content}
 					/>
 				</div>
 				<div>
 					<label class="text-black" for="category">Category</label>
 					<select
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"
-						bind:value={category}
+						bind:value={productById.category}
 					>
 						<option>Category 1</option>
 						<option>Category 2</option>
@@ -115,7 +125,7 @@
 				<div>
 					<p class="block text-sm font-medium text-black">Image</p>
 					<div class="flex justify-end">
-						<button on:click={() => handleRemoveImage(images.public_id)}>
+						<button on:click={() => handleRemoveImage(productById.images.public_id)}>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -202,5 +212,5 @@
 				>
 			</div>
 		</form>
-	</section>
-{/if}
+	{/if}
+</section>

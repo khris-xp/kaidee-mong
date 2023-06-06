@@ -4,6 +4,7 @@
 	import { addToCart, cartItems, removeFromCart } from '../store/cart';
 	import { user } from '../store/user';
 	export let product: IProduct = {
+		_id: '',
 		product_id: '',
 		title: '',
 		price: 0,
@@ -73,7 +74,7 @@
 		</div>
 		<div class="flex items-center justify-between mx-4 space-x-2">
 			{#if $user?.role === 1}
-				<a href={`/products/edit-product/${product.product_id}`}>
+				<a href={`/edit-product/${product.product_id}`}>
 					<button
 						class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
 					>
