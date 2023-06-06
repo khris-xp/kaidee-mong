@@ -1,7 +1,18 @@
+import type { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 import { axiosInstance } from '../services/axios.services';
 
 export const userService = {
+    register: async (name: string, email: string, password: string) => {
+        try {
+            const response: AxiosResponse = await axiosInstance.post('/user/register', { name, email, password });
+            Cookies.set('token', response.data.accesstoken, { expires: 1 });
+            return response.data;
+        } catch (error) {
+            const message = (error as Error).message;
+            throw new Error(message);
+        }
+    },
     login: async (email: string, password: string) => {
         try {
             const response = await axiosInstance.post('/user/login', { email, password });
@@ -28,7 +39,8 @@ export const userService = {
                 return response.data;
             }
         } catch (error) {
-            return error;
+            const message = (error as Error).message;
+            throw new Error(message);
         }
     }
 }
