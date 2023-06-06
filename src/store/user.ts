@@ -3,15 +3,14 @@ import type { IUser } from "../interfaces/user";
 import { userService } from "../services/user.services";
 
 export const initialUser: IUser = {
-    email: "",
-    username: "",
-    score: 0,
-    role: "",
-    tasks: [],
-    _id: "",
-    group: "",
-    createdAt: "",
-    updatedAt: ""
+    _id: '',
+    name: '',
+    email: '',
+    role: 0,
+    cart: [],
+    createdAt: undefined,
+    updatedAt: undefined,
+    __v: 0,
 }
 
 export const user: Writable<IUser> = writable(initialUser);

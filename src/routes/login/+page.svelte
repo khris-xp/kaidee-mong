@@ -11,6 +11,9 @@
 			success: 'Login success',
 			error: 'Login failed'
 		});
+		setTimeout(() => {
+			window.location.href = '/';
+		}, 1000);
 	};
 </script>
 

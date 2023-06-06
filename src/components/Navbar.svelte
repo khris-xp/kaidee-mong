@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { NavBrand, NavHamburger, NavLi, NavUl, Navbar } from 'flowbite-svelte';
+	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import { userService } from '../services/user.services';
-	import { user } from '../store/user';
+	import { updateUserProfile, user } from '../store/user';
 
 	const logout = async () => {
 		toast.promise(userService.logout(), {
@@ -15,6 +16,10 @@
 			window.location.href = '/login';
 		}, 1000);
 	};
+
+	onMount(async () => {
+		await updateUserProfile();
+	});
 </script>
 
 <Navbar let:hidden let:toggle>
@@ -29,9 +34,7 @@
 			activeClass="text-orange-500"
 			nonActiveClass="text-gray-500 hover:text-orange-500">Home</NavLi
 		>
-		{#if $user.name !== undefined}
-			<button class="text-gray-500 hover:text-orange-500" on:click={logout}>Logout</button>
-		{:else}
+		{#if $user?.name === undefined || $user?.name === ''}
 			<NavLi
 				href="/register"
 				active={$page.url.pathname === '/register'}
@@ -44,6 +47,8 @@
 				activeClass="text-orange-500"
 				nonActiveClass="text-gray-500 hover:text-orange-500">Login</NavLi
 			>
+		{:else}
+			<button class="text-gray-500 hover:text-orange-500" on:click={logout}>Logout</button>
 		{/if}
 	</NavUl>
 </Navbar>

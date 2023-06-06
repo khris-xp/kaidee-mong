@@ -14,7 +14,7 @@ export const userService = {
     },
     logout: async () => {
         try {
-            Cookies.remove('token');
+            Cookies.set('token', '', { expires: 0 });
         } catch (error) {
             const message = (error as Error).message;
             throw new Error(message);
@@ -22,8 +22,11 @@ export const userService = {
     },
     getUserProfile: async () => {
         try {
-            const response = await axiosInstance.get('/user/info');
-            return response.data;
+            const token = Cookies.get('token');
+            if (token) {
+                const response = await axiosInstance.get('/user/info');
+                return response.data;
+            }
         } catch (error) {
             return error;
         }
