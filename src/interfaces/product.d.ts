@@ -1,18 +1,9 @@
-export interface IProduct {
-    _id: string;
-    name: string;
-    price: number;
-    sale_price: number;
-    rating: number;
-    image: string;
-}
-
 export interface ICart {
     _id: string;
     quantity: number;
 }
 
-export interface INewProduct {
+export interface IProduct {
     product_id: string;
     title: string;
     price: number;
@@ -20,6 +11,8 @@ export interface INewProduct {
     content: string;
     category: string;
     images: IImages;
+    sold: number;
+    checked: boolean;
 }
 
 export interface IImages {

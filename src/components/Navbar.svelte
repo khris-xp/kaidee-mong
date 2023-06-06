@@ -48,6 +48,14 @@
 				nonActiveClass="text-gray-500 hover:text-orange-500">Login</NavLi
 			>
 		{:else}
+			{#if $user?.role === 1}
+				<NavLi
+					href="/create-product"
+					active={$page.url.pathname === '/create-product' ? true : false}
+					activeClass="text-orange-500"
+					nonActiveClass="text-gray-500 hover:text-orange-500">Create</NavLi
+				>
+			{/if}
 			<button class="text-gray-500 hover:text-orange-500" on:click={logout}>Logout</button>
 		{/if}
 	</NavUl>

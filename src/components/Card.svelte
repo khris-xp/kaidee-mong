@@ -2,41 +2,44 @@
 	import { get } from 'svelte/store';
 	import type { IProduct } from '../interfaces/product';
 	import { addToCart, cartItems, removeFromCart } from '../store/cart';
+	import { user } from '../store/user';
 	export let product: IProduct = {
-		_id: '',
-		name: '',
+		product_id: '',
+		title: '',
 		price: 0,
-		image: '',
-		sale_price: 0,
-		rating: 0
+		description: '',
+		content: '',
+		category: '',
+		images: {
+			public_id: '',
+			url: ''
+		},
+		sold: 0,
+		checked: false
 	};
 
 	let cart = get(cartItems);
 	let cartItemIndex = cart.findIndex((item) => {
-		return item._id === product._id;
+		return item._id === product.product_id;
 	});
 	let cartProduct = cart[cartItemIndex];
 	cartItems.subscribe((newCartValue) => {
 		cart = newCartValue;
 		cartItemIndex = cart.findIndex((item) => {
-			return item._id === product._id;
+			return item._id === product.product_id;
 		});
 		cartProduct = cart[cartItemIndex];
 	});
 </script>
 
 <div class="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
-	<a href="/">
-		<img class="h-60 rounded-t-lg object-cover w-full" src={product.image} alt="product" />
+	<a href={`/product/${product.product_id}`}>
+		<img class="h-60 rounded-t-lg object-cover w-full" src={product.images.url} alt="product" />
 	</a>
-	<span
-		class="absolute top-0 left-0 w-28 translate-y-4 -translate-x-6 -rotate-45 bg-black text-center text-sm text-white"
-		>Sale</span
-	>
 	<div class="mt-4 px-5 pb-5">
-		<a href="/" class="space-x-16">
+		<a href={`/product/${product.product_id}`} class="space-x-16">
 			<h5 class="inline-flex justify-start text-xl font-semibold tracking-tight text-slate-900">
-				{product.name}
+				{product.title}
 			</h5>
 			{#if cartProduct === undefined}
 				<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
@@ -50,10 +53,8 @@
 			{/if}
 		</a>
 		<div class="mt-2.5 mb-5 flex items-center">
-			<span class="mr-2 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold"
-				>{product.rating}.0</span
-			>
-			{#each Array(product.rating) as _, i}
+			<span class="mr-2 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">4.0</span>
+			{#each Array(4) as _, i}
 				<svg
 					aria-hidden="true"
 					class="h-5 w-5 text-yellow-300"
@@ -66,24 +67,40 @@
 					/>
 				</svg>
 			{/each}
-			<p class="ml-2">
-				<span class="text-3xl font-bold text-slate-900">฿{product.sale_price}</span>
-				<span class="text-sm text-slate-900 line-through">฿{product.price}</span>
+			<p class="ml-5">
+				<span class="text-3xl font-bold text-slate-900">฿{product.price}</span>
 			</p>
 		</div>
 		<div class="flex items-center justify-between mx-4 space-x-2">
-			<button
-				class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-				on:click={() => addToCart(product._id)}
-			>
-				Add to cart</button
-			>
-			<button
-				class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-				on:click={() => removeFromCart(product._id)}
-			>
-				Remove</button
-			>
+			{#if $user?.role === 1}
+				<a href={`/products/edit-product/${product.product_id}`}>
+					<button
+						class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+					>
+						Edit</button
+					>
+				</a>
+				<button
+					class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+					on:click={() => removeFromCart(product.product_id)}
+				>
+					Delete</button
+				>
+			{/if}
+			{#if $user?.role === 0}
+				<button
+					class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+					on:click={() => addToCart(product.product_id)}
+				>
+					Add to cart</button
+				>
+				<button
+					class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+					on:click={() => removeFromCart(product.product_id)}
+				>
+					Remove</button
+				>
+			{/if}
 		</div>
 	</div>
 </div>

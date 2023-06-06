@@ -1,10 +1,19 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import { get } from 'svelte/store';
 	import Card from '../components/Card.svelte';
-	import { products } from '../constants/product';
+	import type { IProduct } from '../interfaces/product';
+	import { productService } from '../services/product.services';
 	import { cartItems } from '../store/cart';
 	import { user } from '../store/user';
+
+	let products: IProduct[] = [];
+
+	onMount(async () => {
+		const response = await productService.getAllProducts();
+		products = response;
+	});
 
 	async function checkout() {
 		toast.promise(
