@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 	import { get } from 'svelte/store';
 	import type { IProduct } from '../interfaces/product';
+	import { productService } from '../services/product.services';
 	import { addToCart, cartItems, removeFromCart } from '../store/cart';
 	import { user } from '../store/user';
 	export let product: IProduct = {
@@ -31,6 +34,18 @@
 		});
 		cartProduct = cart[cartItemIndex];
 	});
+
+	const deleteProduct = async () => {
+		try {
+			await productService.deleteProducts(product._id);
+			toast.success('Product deleted');
+			setTimeout(() => {
+				window.location.reload();
+			}, 1000);
+		} catch (error) {
+			toast.error('Product delete failed');
+		}
+	};
 </script>
 
 <div class="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
@@ -83,7 +98,7 @@
 				</a>
 				<button
 					class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-					on:click={() => removeFromCart(product.product_id)}
+					on:click={() => deleteProduct()}
 				>
 					Delete</button
 				>
