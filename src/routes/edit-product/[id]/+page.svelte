@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { AxiosProgressEvent } from 'axios';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
-	import type { ChangeEventHandler } from 'svelte/elements';
 	import type { IProduct } from '../../../interfaces/product';
 	import { productService } from '../../../services/product.services';
 	import { uploadService } from '../../../services/upload.services';
 
 	let productById: IProduct;
-	let uploadImageStatus: boolean = false;
+	let loadingImage: boolean = false;
+	let uploadLoadImageStatus: boolean = false;
+	let uploadProgress: number = 0;
 
 	const fetchProductById = async () => {
 		const data = await productService.getAllProducts();
@@ -22,19 +24,24 @@
 	let images: { public_id: string; url: string } = { public_id: '', url: '' };
 
 	const handleUploadImage = async (e: Event) => {
+		loadingImage = true;
 		const inputElement = e.target as HTMLInputElement;
 		const files = inputElement.files?.[0];
-		const response = await uploadService.uploadImage(files!);
-		uploadImageStatus = true;
+		const response = await uploadService.uploadImage(
+			files!,
+			(progressEvent: AxiosProgressEvent) => {
+				uploadProgress = Math.round((progressEvent.loaded / progressEvent.total!) * 100);
+			}
+		);
 		images = response;
-		uploadImageStatus = false;
+		loadingImage = false;
 	};
 
 	const handleRemoveImage = async (id: string) => {
-		uploadImageStatus = true;
+		uploadLoadImageStatus = true;
 		await uploadService.deleteImage(id);
 		images = { public_id: '', url: '' };
-		uploadImageStatus = false;
+		uploadLoadImageStatus = false;
 	};
 
 	const handleSubmit = async () => {
@@ -125,28 +132,30 @@
 				<div>
 					<p class="block text-sm font-medium text-black">Image</p>
 					<div class="flex justify-end">
-						<button on:click={() => handleRemoveImage(productById.images.public_id)}>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								class="w-6 h-6 text-red-600 cursor-pointer"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
-						</button>
+						{#if images.url !== '' || images.public_id !== ''}
+							<button on:click={() => handleRemoveImage(images.public_id)}>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-6 h-6 text-red-600 cursor-pointer"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+									/>
+								</svg>
+							</button>
+						{/if}
 					</div>
 					<div
 						class="mt-1 flex justify-center pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
 					>
 						<div class="space-y-1 text-center">
-							{#if images.url === '' || images.public_id === ''}
+							{#if (images.url === '' || images.public_id === '') && uploadLoadImageStatus === false}
 								<svg
 									class="mx-auto h-12 w-12 text-black"
 									stroke="currentColor"
@@ -179,7 +188,7 @@
 									<p class="pl-1 text-black">or drag and drop</p>
 								</div>
 								<p class="text-xs text-black">PNG, JPG, GIF up to 10MB</p>
-							{:else if uploadImageStatus}
+							{:else if uploadLoadImageStatus}
 								<svg
 									aria-hidden="true"
 									class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -201,6 +210,14 @@
 							{/if}
 						</div>
 					</div>
+					{#if loadingImage}
+						<div>
+							<p class="block text-sm font-medium text-black">Progress {uploadProgress}%</p>
+							<div class="w-full bg-gray-200 mt-2 rounded-full h-2.5 dark:bg-gray-700">
+								<div class="bg-blue-600 h-2.5 rounded-full" style="width: {uploadProgress}%" />
+							</div>
+						</div>
+					{/if}
 				</div>
 			</div>
 

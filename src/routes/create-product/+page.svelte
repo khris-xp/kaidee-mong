@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { AxiosProgressEvent } from 'axios';
 	import toast from 'svelte-french-toast';
 	import Error from '../../components/Error.svelte';
 	import { productService } from '../../services/product.services';
@@ -12,22 +13,29 @@
 	let content: string = '';
 	let category: string = '';
 	let images: { public_id: string; url: string } = { public_id: '', url: '' };
-	let uploadImageStatus: boolean = false;
+	let loadingImage: boolean = false;
+	let uploadLoadImageStatus: boolean = false;
+	let uploadProgress: number = 0;
 
 	const handleUploadImage = async (e: Event) => {
+		loadingImage = true;
 		const inputElement = e.target as HTMLInputElement;
 		const files = inputElement.files?.[0];
-		const response = await uploadService.uploadImage(files!);
-		uploadImageStatus = true;
+		const response = await uploadService.uploadImage(
+			files!,
+			(progressEvent: AxiosProgressEvent) => {
+				uploadProgress = Math.round((progressEvent.loaded / progressEvent.total!) * 100);
+			}
+		);
 		images = response;
-		uploadImageStatus = false;
+		loadingImage = false;
 	};
 
 	const handleRemoveImage = async (id: string) => {
-		uploadImageStatus = true;
+		uploadLoadImageStatus = true;
 		await uploadService.deleteImage(id);
 		images = { public_id: '', url: '' };
-		uploadImageStatus = false;
+		uploadLoadImageStatus = false;
 	};
 
 	$: handleSubmit = async () => {
@@ -138,7 +146,7 @@
 						class="mt-1 flex justify-center pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
 					>
 						<div class="space-y-1 text-center">
-							{#if images.url === '' || images.public_id === ''}
+							{#if (images.url === '' || images.public_id === '') && uploadLoadImageStatus === false}
 								<svg
 									class="mx-auto h-12 w-12 text-black"
 									stroke="currentColor"
@@ -171,7 +179,7 @@
 									<p class="pl-1 text-black">or drag and drop</p>
 								</div>
 								<p class="text-xs text-black">PNG, JPG, GIF up to 10MB</p>
-							{:else if uploadImageStatus}
+							{:else if loadingImage}
 								<svg
 									aria-hidden="true"
 									class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -193,6 +201,14 @@
 							{/if}
 						</div>
 					</div>
+					{#if loadingImage}
+						<div>
+							<p class="block text-sm font-medium text-black">Progress {uploadProgress}%</p>
+							<div class="w-full bg-gray-200 mt-2 rounded-full h-2.5 dark:bg-gray-700">
+								<div class="bg-blue-600 h-2.5 rounded-full" style="width: {uploadProgress}%" />
+							</div>
+						</div>
+					{/if}
 				</div>
 			</div>
 
