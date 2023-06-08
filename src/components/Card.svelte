@@ -5,7 +5,6 @@
 	import type { IProduct } from '../interfaces/product';
 	import { productService } from '../services/product.services';
 	import { addToCart, cartItems, removeFromCart } from '../store/cart';
-	import { user } from '../store/user';
 	export let product: IProduct = {
 		_id: '',
 		product_id: '',
@@ -48,75 +47,61 @@
 	};
 </script>
 
-<div class="relative m-10 w-full max-w-xs overflow-hidden rounded-lg bg-white shadow-md">
-	<a href={`/product/${product.product_id}`}>
-		<img class="h-60 rounded-t-lg object-cover w-full" src={product.images.url} alt="product" />
-	</a>
-	<div class="mt-4 px-5 pb-5">
-		<a href={`/product/${product.product_id}`} class="space-x-16">
-			<h5 class="inline-flex justify-start text-xl font-semibold tracking-tight text-slate-900">
-				{product.title}
-			</h5>
-			{#if cartProduct === undefined}
-				<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
-					Quantity : 0
-				</h5>
-			{/if}
-			{#if cartProduct !== undefined}
-				<h5 class="inline-flex justify-end text-base font-semibold tracking-tight text-slate-900">
-					Quantity : {cartProduct?.quantity}
-				</h5>
-			{/if}
-		</a>
-		<div class="mt-2.5 mb-5 flex items-center">
-			<span class="mr-2 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">4.0</span>
-			{#each Array(4) as _, i}
-				<svg
-					aria-hidden="true"
-					class="h-5 w-5 text-yellow-300"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<path
-						d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-					/>
-				</svg>
-			{/each}
-			<p class="ml-5">
-				<span class="text-3xl font-bold text-slate-900">฿{product.price}</span>
-			</p>
-		</div>
-		<div class="flex items-center justify-between mx-4 space-x-2">
-			{#if $user?.role === 1}
-				<a href={`/edit-product/${product.product_id}`}>
-					<button
-						class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-					>
-						Edit</button
-					>
-				</a>
+<div class="flex flex-col justify-center items-center">
+	<div
+		class="!z-5 relative flex flex-col rounded-[20px] max-w-[300px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 w-full !p-4 3xl:p-![18px] undefined"
+	>
+		<div class="h-full w-full">
+			<div class="relative w-full">
+				<img
+					src={product.images.url}
+					class="mb-3 h-full w-full rounded-xl 3xl:h-full 3xl:w-full"
+					alt=""
+				/>
+			</div>
+			<div class="mb-3 flex items-center justify-between px-1 md:items-start">
+				<div class="mb-2">
+					<p class="text-lg font-bold text-navy-700">{product.title}</p>
+					<p class="mt-1 text-sm font-medium text-gray-600 md:mt-2">By Esthera Jackson</p>
+				</div>
+				<div class="flex flex-row-reverse md:mt-2 lg:mt-0">
+					<span
+						class="z-0 ml-px inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#E0E5F2] text-xs text-navy-700"
+						>+5</span
+					><span class="z-10 -mr-3 h-8 w-8 rounded-full border-2 border-white">
+						<img
+							class="h-full w-full rounded-full object-cover"
+							src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/avatar1.eeef2af6dfcd3ff23cb8.png"
+							alt=""
+						/>
+					</span>
+					<span class="z-10 -mr-3 h-8 w-8 rounded-full border-2 border-white">
+						<img
+							class="h-full w-full rounded-full object-cover"
+							src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/avatar2.5692c39db4f8c0ea999e.png"
+							alt=""
+						/>
+					</span>
+					<span class="z-10 -mr-3 h-8 w-8 rounded-full border-2 border-white">
+						<img
+							class="h-full w-full rounded-full object-cover"
+							src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/avatar3.9f646ac5920fa40adf00.png"
+							alt=""
+						/>
+					</span>
+				</div>
+			</div>
+			<div class="flex items-center justify-between md:items-center lg:justify-between">
+				<div class="flex">
+					<p class="!mb-0 text-sm font-bold text-purple-500">
+						Current Bid: {product.price} <span>ETH</span>
+					</p>
+				</div>
 				<button
-					class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-					on:click={() => deleteProduct()}
+					class="linear rounded-[20px] bg-purple-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-800 active:bg-purple-700"
+					><a href={`/edit-product/${product.product_id}`}>Edit</a></button
 				>
-					Delete</button
-				>
-			{/if}
-			{#if $user?.role === 0}
-				<button
-					class="flex items-center rounded-md bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-					on:click={() => addToCart(product.product_id)}
-				>
-					Add to cart</button
-				>
-				<button
-					class="flex items-center rounded-md bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-					on:click={() => removeFromCart(product.product_id)}
-				>
-					Remove</button
-				>
-			{/if}
+			</div>
 		</div>
 	</div>
 </div>

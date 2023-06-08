@@ -22,7 +22,7 @@
 	});
 </script>
 
-<Navbar let:hidden let:toggle>
+<Navbar let:hidden let:toggle class="bg-zinc-100">
 	<NavBrand href="/">
 		<img src="/shopee-logo.png" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
 	</NavBrand>

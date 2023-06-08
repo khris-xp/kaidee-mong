@@ -4,6 +4,8 @@
 	import Navbar from '../components/Navbar.svelte';
 </script>
 
-<Toaster />
-<Navbar />
-<slot />
+<div class="bg-gray-100 min-h-screen">
+	<Toaster />
+	<Navbar />
+	<slot />
+</div>

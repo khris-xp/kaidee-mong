@@ -1,4 +1,4 @@
 export interface IPayment {
-    price: string
-    quantity: number
+	price: string;
+	quantity: number;
 }
