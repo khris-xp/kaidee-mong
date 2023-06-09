@@ -1,6 +1,7 @@
 <script>
 	import { Toaster } from 'svelte-french-toast';
 	import '../app.css';
+	import Footer from '../components/Footer.svelte';
 	import Navbar from '../components/Navbar.svelte';
 </script>
 
@@ -9,3 +10,4 @@
 	<Navbar />
 	<slot />
 </div>
+<Footer />

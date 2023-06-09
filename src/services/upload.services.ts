@@ -38,7 +38,11 @@ export const uploadService = {
 				}
 			};
 
-			const response: AxiosResponse = await axiosInstance.post('/api/upload/video', formData, config);
+			const response: AxiosResponse = await axiosInstance.post(
+				'/api/upload/video',
+				formData,
+				config
+			);
 			return response.data;
 		} catch (error) {
 			const message = (error as Error).message;

@@ -182,7 +182,7 @@
 							{:else if loadingImage}
 								<svg
 									aria-hidden="true"
-									class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+									class="w-8 h-8 mr-2 text-gray-200 animate-spin fill-blue-600"
 									viewBox="0 0 100 101"
 									fill="none"
 									xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@
 					{#if loadingImage}
 						<div>
 							<p class="block text-sm font-medium text-black">Progress {uploadProgress}%</p>
-							<div class="w-full bg-gray-200 mt-2 rounded-full h-2.5 dark:bg-gray-700">
+							<div class="w-full bg-gray-200 mt-2 rounded-full h-2.5">
 								<div class="bg-blue-600 h-2.5 rounded-full" style="width: {uploadProgress}%" />
 							</div>
 						</div>

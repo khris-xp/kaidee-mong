@@ -5,6 +5,7 @@
 	import type { IProduct } from '../interfaces/product';
 	import { productService } from '../services/product.services';
 	import { addToCart, cartItems, removeFromCart } from '../store/cart';
+	import { user } from '../store/user';
 	export let product: IProduct = {
 		_id: '',
 		product_id: '',
@@ -97,10 +98,20 @@
 						Current Bid: {product.price} <span>ETH</span>
 					</p>
 				</div>
-				<button
-					class="linear rounded-[20px] bg-purple-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-800 active:bg-purple-700"
-					><a href={`/edit-product/${product.product_id}`}>Edit</a></button
-				>
+				{#if $user?.role === 1}
+					<button
+						class="linear rounded-[20px] bg-purple-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-800 active:bg-purple-700"
+					>
+						<a href={`/edit-product/${product.product_id}`}>Edit</a>
+					</button>
+				{/if}
+				{#if $user?.role === 0}
+					<button
+						class="linear rounded-[20px] bg-purple-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-purple-800 active:bg-purple-700"
+					>
+						<p>Place Bid</p>
+					</button>
+				{/if}
 			</div>
 		</div>
 	</div>
